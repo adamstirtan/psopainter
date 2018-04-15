@@ -1,39 +1,38 @@
 
 $(document).ready(function() {
     var worker = null,
-        imageOriginal = $("#img-original"),
-        textareaOutput = $("#textarea-output"),
-        inputSelectImage = $("#input-select-image"),
-        inputR1 = $("#input-r1"),
-        inputR2 = $("#input-r2"),
-        inputSwarmSize = $("#input-swarm-size"),
-        buttonStart = $("#button-start"),
-        buttonStop = $("#button-stop");
+        endAngle = 2 * Math.PI,
+        canvas = document.getElementById("canvas-pso"),
+        context = canvas.getContext("2d"),
+        imageOriginal = document.getElementById("img-original"),
+        textareaOutput = document.getElementById("textarea-output"),
+        inputSelectImage = document.getElementById("input-select-image"),
+        inputR1 = document.getElementById("input-r1"),
+        inputR2 = document.getElementById("input-r2"),
+        inputSwarmSize = document.getElementById("input-swarm-size"),
+        buttonStart = document.getElementById("button-start"),
+        buttonStop = document.getElementById("button-stop");
 
     $(".tabular.menu .item").tab();
 
-    inputSelectImage.on("change", function(e) {
+    inputSelectImage.addEventListener("change", function(e) {
         if (e.target.files && e.target.files[0]) {
             var reader = new FileReader();
 
             reader.onload = function (e) {
-                imageOriginal
-                    .attr('src', e.target.result)
-                    .width(500)
-                    .height(500);
-
-                buttonStart.removeClass("disabled");
+                imageOriginal.src = e.target.result;
+                buttonStart.classList.remove("disabled");
             };
 
             reader.readAsDataURL(e.target.files[0]);
         }
     });
 
-    buttonStart.on("click", function(e) {
+    buttonStart.addEventListener("click", function(e) {
         e.preventDefault();
 
-        buttonStart.addClass("disabled");
-        buttonStop.removeClass("disabled");
+        buttonStart.classList.add("disabled");
+        buttonStop.classList.remove("disabled");
 
         worker = new Worker("pso.js");
         worker.addEventListener("message", function (e) {
@@ -43,25 +42,25 @@ $(document).ready(function() {
         worker.postMessage("START");
     });
 
-    buttonStop.on("click", function(e) {
+    buttonStop.addEventListener("click", function(e) {
         e.preventDefault();
 
-        buttonStart.removeClass("disabled");
-        buttonStop.addClass("disabled");
+        buttonStart.classList.remove("disabled");
+        buttonStop.classList.add("disabled");
 
         if (worker != null) {
             worker.terminate();
         }
     });
 
-    // var canvasOriginal = document.getElementById("canvas-original");
-    // var contextOriginal = canvas.getContext("2d");
+    paint = function(vector) {
+        context.clearRect(0, 0, canvas.width, canvas.height);
 
-    // var canvasPso = document.getElementById("canvas-pso");
-    // var contextPso = canvas.getContext("2d");
+        context.beginPath();
+        context.arc(vector[0], vector[1], vector[2], 0, endAngle, false);
+        context.fillStyle = "rgba(" + vector[3] + "," + vector[4] + "," + vector[5] + "," + vector[6] + ")";
+        context.fill();
+    };
 
-    // context.beginPath();
-    // context.arc(359, 150, 70, 0, 2 * Math.PI, false);
-    // context.fillStyle = "rgba(0, 255, 0, 0.8)";
-    // context.fill();
+    paint([250, 250, 89, 255, 0, 0, 0.5]);
 });
