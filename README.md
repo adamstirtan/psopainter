@@ -5,14 +5,12 @@ This app demonstrates the use of particle swarm optimization to copy an image su
 
 Web workers are used to run the PSO algorithm so it is recommended to run the app you have nodejs and start http-server from the main directory.
 
-> path/to/psopainter> http-server
-
-> Starting up http-server, serving ./
-
-> Available on:
-
->   http://10.10.10.100:8080
-
->   http://127.0.0.1:8080
+```
+path/to/psopainter> http-server
+Starting up http-server, serving ./
+Available on:
+   http://10.10.10.100:8080
+   http://127.0.0.1:8080
+```
 
 Navigate to http://localhost:8080 to see the UI.
