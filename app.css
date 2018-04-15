@@ -9,3 +9,14 @@ body {
 #settings {
     margin-top: 3rem;
 }
+
+#img-original {
+    margin: 2rem 0;
+    width: 500px;
+    height: 500px;
+}
+
+#canvas-pso {
+    margin: 2rem 0;
+    border: 1px solid #ccc;
+}
