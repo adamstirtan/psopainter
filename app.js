@@ -36,7 +36,7 @@ $(document).ready(function() {
 
         worker = new Worker("pso.js");
         worker.addEventListener("message", function (e) {
-            textareaOutput.val(e.data + "\r\n" + textareaOutput.val());
+            textareaOutput.value = e.data + "\r\n" + textareaOutput.value;
         });
 
         worker.postMessage("START");
