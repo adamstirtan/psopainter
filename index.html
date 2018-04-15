@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+
+    <title>PSO</title>
+
+</head>
+
+<body>
+
+    <canvas id="canvas" width="1000" height="1000">
+    </canvas>
+
+    <script>
+        window.onload = function() {
+            var worker = new Worker("pso.js");
+            worker.addEventListener("message", function (e) {
+                console.log(e.data);
+            });
+
+            worker.postMessage("start");
+
+            var canvas = document.getElementById("canvas");
+            var context = canvas.getContext("2d");
+    
+            // draw rectangle
+            context.beginPath();
+            context.rect(240, 30, 130, 130);
+            context.fillStyle = "rgba(255, 0, 0, 0.7)";
+            context.fill();
+    
+            // draw circle
+            context.beginPath();
+            context.arc(359, 150, 70, 0, 2 * Math.PI, false);
+            context.fillStyle = "rgba(0, 255, 0, 0.8)";
+            context.fill();
+        };
+    </script>
+
+</body>
+
+</html>
