@@ -7,8 +7,8 @@ $(document).ready(function() {
         imageOriginal = document.getElementById("img-original"),
         textareaOutput = document.getElementById("textarea-output"),
         inputSelectImage = document.getElementById("input-select-image"),
-        inputR1 = document.getElementById("input-r1"),
-        inputR2 = document.getElementById("input-r2"),
+        inputC1 = document.getElementById("input-c1"),
+        inputC2 = document.getElementById("input-c2"),
         inputSwarmSize = document.getElementById("input-swarm-size"),
         buttonStart = document.getElementById("button-start"),
         buttonStop = document.getElementById("button-stop");
@@ -56,11 +56,14 @@ $(document).ready(function() {
     paint = function(vector) {
         context.clearRect(0, 0, canvas.width, canvas.height);
 
-        context.beginPath();
-        context.arc(vector[0], vector[1], vector[2], 0, endAngle, false);
-        context.fillStyle = "rgba(" + vector[3] + "," + vector[4] + "," + vector[5] + "," + vector[6] + ")";
-        context.fill();
+        for (var i = 0; i < vector.length; i += 7) {
+            context.beginPath();
+            context.arc(vector[i], vector[i + 1], vector[i + 2], 0, endAngle, false);
+            context.fillStyle = "rgba(" + vector[i + 3] + "," + vector[i + 4] + "," + vector[i + 5] + "," + vector[i + 6] + ")";
+            context.fill();
+        }
     };
 
-    paint([250, 250, 89, 255, 0, 0, 0.5]);
+    paint([250, 250, 89, 255, 0, 0, 0.5,
+           320, 160, 120, 0, 255, 255, 0.7]);
 });
