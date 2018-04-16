@@ -11,40 +11,44 @@ class PSO {
         this.swarm = new Swarm(options.swarmSize, {
             min: 0,
             max: 500
-        }, {
-            min: 0,
-            max: 500
         });
     }
 
     start() {
-        console.log("starting up");
+        for (let i = 0; i < this.swarm.particles.length; i++) {
+            console.log(this.swarm.particles[i]);
+        }
     }
 }
 
 class Swarm {
-    constructor(swarmSize, c1, c2, boundsX, boundsY) {
-        this.counter = 0;
+    constructor(swarmSize, c1, c2, bounds) {
         this.particles = [];
         this.globalBest = [];
 
         for (let i = 0; i < swarmSize; i++) {
-            this.particles.push(new Particle(boundsX, boundsY));
+            this.particles.push(new Particle(bounds));
+        }
+    }
+
+    iteration() {
+        for (const particle of this.particles) {
+            particle.update(this.globalBest);
         }
     }
 }
 
 class Particle {
-    constructor(c1, c2, boundsX, boundsY) {
+    constructor(c1, c2, bounds) {
         this.position = [];
         this.velocity = [];
         this.personalBest = [];
         this.c1 = c1;
         this.c2 = c2;
 
-        this.position.push(Math.random() * boundsX.max);
-        this.position.push(Math.random() * boundsY.max);
-        this.position.push(Math.random() * ((boundsX.max + boundsY.max) / 2.0));
+        this.position.push(Math.random() * bounds.max);
+        this.position.push(Math.random() * bounds.max);
+        this.position.push(Math.random() * bounds.max);
         this.position.push(Math.random() * 255.0);
         this.position.push(Math.random() * 255.0);
         this.position.push(Math.random() * 255.0);
@@ -57,15 +61,19 @@ class Particle {
         }
     }
 
-    update() {
-        let velocity = [];
+    update(globalBest) {
+        let newVelocity = [];
 
         for (let i = 0; i < this.position.length; i++) {
-            let velocity = 
+            newVelocity[i] = this.velocity[i] +
+                (this.c1 * (this.personalBest[i] - this.position[i])) +
+                (this.c2 * (globalBest[i] - this.position[i]));
         }
 
+        this.velocity = newVelocity;
+
         for (let i = 0; i < this.position.length; i++) {
-            this.position[i] = velocity[i] * this.position[i];
+            this.position[i] += this.velocity[i];
         }
     }
 }
