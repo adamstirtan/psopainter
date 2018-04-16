@@ -1,6 +1,6 @@
 
 $(document).ready(function() {
-    var worker = null,
+    let worker = null,
         endAngle = 2 * Math.PI,
         canvas = document.getElementById("canvas-pso"),
         context = canvas.getContext("2d"),
@@ -39,7 +39,13 @@ $(document).ready(function() {
             textareaOutput.value = e.data + "\r\n" + textareaOutput.value;
         });
 
-        worker.postMessage("START");
+        let message = {
+            swarmSize: inputSwarmSize.value,
+            c1 = inputC1.value,
+            c2 = inputC2.value
+        };
+
+        worker.postMessage(message);
     });
 
     buttonStop.addEventListener("click", function(e) {

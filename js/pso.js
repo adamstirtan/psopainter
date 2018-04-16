@@ -1,10 +1,14 @@
+let worker = this;
+
 this.addEventListener("message", function(e) {
-    this.postMessage(e.data);
+    let pso = new PSO(e.data);
+    pso.start();
 }, false);
 
 class PSO {
     constructor(options) {
-        this.swarm = new Swarm(options.swarmSize, 7, {
+        this.imageData = options.imageData;
+        this.swarm = new Swarm(options.swarmSize, {
             min: 0,
             max: 500
         }, {
@@ -12,28 +16,31 @@ class PSO {
             max: 500
         });
     }
+
+    start() {
+        console.log("starting up");
+    }
 }
 
 class Swarm {
-    constructor(swarmSize, dimensions, boundsX, boundsY) {
+    constructor(swarmSize, c1, c2, boundsX, boundsY) {
         this.counter = 0;
         this.particles = [];
         this.globalBest = [];
 
-        for (var i = 0; i < swarmSize; i++) {
-            this.particles.push(new Particle(dimensions, boundsX, boundsY));
+        for (let i = 0; i < swarmSize; i++) {
+            this.particles.push(new Particle(boundsX, boundsY));
         }
-    }
-
-    count() {
-        return ++this.counter;
     }
 }
 
 class Particle {
-    constructor(boundsX, boundsY) {
+    constructor(c1, c2, boundsX, boundsY) {
         this.position = [];
+        this.velocity = [];
         this.personalBest = [];
+        this.c1 = c1;
+        this.c2 = c2;
 
         this.position.push(Math.random() * boundsX.max);
         this.position.push(Math.random() * boundsY.max);
@@ -44,19 +51,21 @@ class Particle {
         this.position.push(Math.random());
 
         this.personalBest = this.position.slice(0); // copy
+
+        for (let i = 0; i < this.position.length; i++) {
+            this.velocity[i] = Math.random();
+        }
     }
 
     update() {
-        var velocity = [];
+        let velocity = [];
 
-        for (var i = 0; i < this.position.length; i++) {
+        for (let i = 0; i < this.position.length; i++) {
+            let velocity = 
+        }
+
+        for (let i = 0; i < this.position.length; i++) {
             this.position[i] = velocity[i] * this.position[i];
         }
     }
 }
-
-let swarm = new Swarm(10, 2);
-
-setInterval(function () {
-    this.postMessage("Counter: " + swarm.count());
-}.bind(this), 1000);
