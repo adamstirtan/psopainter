@@ -34,7 +34,7 @@ $(document).ready(function() {
         buttonStart.classList.add("disabled");
         buttonStop.classList.remove("disabled");
 
-        worker = new Worker("pso.js");
+        worker = new Worker("js/pso.js");
         worker.addEventListener("message", function (e) {
             textareaOutput.value = e.data + "\r\n" + textareaOutput.value;
         });
