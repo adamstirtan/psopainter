@@ -67,7 +67,6 @@ $(document).ready(function() {
     });
 
     paint = function(vector) {
-        console.log(vector);
         var canvas = document.getElementById("canvas-pso");
         var context = canvas.getContext("2d");
 
@@ -75,14 +74,11 @@ $(document).ready(function() {
 
         for (var i = 0; i < vector.length; i += 7) {
             context.beginPath();
-            context.arc(vector[i], vector[i + 1], vector[i + 2], 0, 2 * Math.PI, false);
+            context.arc(vector[i], vector[i + 1], Math.max(0, vector[i + 2]), 0, 2 * Math.PI, false);
             context.fillStyle = "rgba(" + vector[i + 3] + "," + vector[i + 4] + "," + vector[i + 5] + "," + vector[i + 6] + ")";
             context.fill();
         }
     };
-
-    // paint([250, 250, 89, 255, 0, 0, 0.5,
-    //        320, 160, 120, 0, 255, 255, 0.7]);
 });
 
 class Swarm {
@@ -155,7 +151,7 @@ class Particle {
 
         for (let i = 0; i < this.position.length; i += 7) {
             context.beginPath();
-            context.arc(this.position[i], this.position[i + 1], this.position[i + 2], 0, 2 * Math.PI, false);
+            context.arc(this.position[i], this.position[i + 1], Math.max(0, this.position[i + 2]), 0, 2 * Math.PI, false);
             context.fillStyle = "rgba(" + this.position[i + 3] + "," + this.position[i + 4] + "," + this.position[i + 5] + "," + this.position[i + 6] + ")";
             context.fill();
         }
@@ -192,7 +188,7 @@ class Particle {
         this.velocity = newVelocity;
 
         for (let i = 0; i < this.position.length; i += 7) {
-            position[i] = Math.min(0, Math.max(position[i] + this.velocity[i], this.bounds.max));
+            this.position[i] = Math.min(0, Math.max(this.position[i] + this.velocity[i], this.bounds.max));
         }
 
         for (let i = 0; i < this.position.length; i++) {
